@@ -14,10 +14,10 @@ class CitySerializer(serializers.ModelSerializer):
         model = City
         fields = ['id', 'name', 'slug']
 
-    def validate(self, data):
-        if len(data['name']) < 3:
+    def validate_name(self, value):
+        if len(value) < 3:
             raise serializers.ValidationError('Siz 3 da belgidan kam belgi kiritdingiz')
-        return data['name']
+        return value
 
     def validate_slug(self, value):
         if not value.islower():
