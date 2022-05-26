@@ -26,6 +26,8 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class NewsSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    city= CitySerializer()
     class Meta:
         model = News
         fields = '__all__'

@@ -60,7 +60,11 @@ class CityDeatilAPI(APIView):
 
 class NewsListAPI(APIView):
     def get(self, request):
-        news = News.objects.all()
+        search = request.GET.get('search')
+        if search:
+            news = News.objects.filter(title__icontains=search)
+        else:
+            news = News.objects.all()
         news_serializer = NewsSerializer(news, many=True)
         return Response(news_serializer.data)
 
@@ -71,3 +75,11 @@ class NewsListAPI(APIView):
             news_serializer.save()
             return Response(news_serializer.data)
         return Response(news_serializer.errors)
+
+
+class NewsCategoryFilterAPI(APIView):
+    def get(self, request, pk):
+        category = Category.objects.get(pk=pk)
+        news = News.objects.filter(category=category)
+        news_serializer = NewsSerializer(news, many=True)
+        return Response(news_serializer.data)
